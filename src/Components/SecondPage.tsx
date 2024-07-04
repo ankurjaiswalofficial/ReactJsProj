@@ -8,8 +8,8 @@ const SecondPage: React.FC = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userDetails = localStorage.getItem('userDetails');
-        if (!userDetails) {
+        const userData = localStorage.getItem('userData');
+        if (!userData) {
             navigate('/');
         }
     }, [navigate]);

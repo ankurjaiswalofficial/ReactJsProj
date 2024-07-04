@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Card, Alert, AlertTitle, Snackbar, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const FirstPage: React.FC = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [showAlertBox, setShowAlertBox] = useState(false);
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [alertMessage, setAlertMessage] = useState<string | undefined>('All Fields Required');
+  const [showAlertBox, setShowAlertBox] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(() => {
+    const state = location.state as { message?: string };
+    if (state) {
+      setAlertMessage(state.message);
+      setShowAlertBox(true);
+    } else{
+      setAlertMessage('All Fields Required');
+      setShowAlertBox(true);
+    }
+  }, [location]);
 
   const handleAlertBox = () => {
     setShowAlertBox(prev => !prev);
@@ -15,10 +27,11 @@ const FirstPage: React.FC = () => {
 
   const handleSubmit = () => {
     if (name && phone && email) {
-      localStorage.setItem('userDetails', JSON.stringify({ name, phone, email }));
+      localStorage.setItem('userData', JSON.stringify({ name, phone, email }));
       navigate('/secondPage');
     } else {
-      setShowAlertBox(prev => !prev);
+      setAlertMessage('All Fields Required');
+      setShowAlertBox(true);
     }
   };
 
@@ -32,7 +45,7 @@ const FirstPage: React.FC = () => {
       >
         <Alert variant='filled' severity="error" onClose={handleAlertBox}>
           <AlertTitle>Error</AlertTitle>
-          All Fields are Required !!
+          {alertMessage}
         </Alert>
       </Snackbar>
 
@@ -46,6 +59,7 @@ const FirstPage: React.FC = () => {
         <TextField
           label="Name"
           value={name}
+          type='text'
           onChange={(e) => setName(e.target.value)}
           fullWidth
           margin="normal"
@@ -53,6 +67,7 @@ const FirstPage: React.FC = () => {
         <TextField
           label="Phone Number"
           value={phone}
+          type='number'
           onChange={(e) => setPhone(e.target.value)}
           fullWidth
           margin="normal"
@@ -60,6 +75,7 @@ const FirstPage: React.FC = () => {
         <TextField
           label="Email"
           value={email}
+          type='email'
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           margin="normal"
