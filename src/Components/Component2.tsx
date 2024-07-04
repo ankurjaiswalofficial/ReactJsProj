@@ -9,7 +9,7 @@ import {
     IconButton,
     Card
 } from '@mui/material';
-import { Add, ExpandLess, ExpandMore, Remove } from '@mui/icons-material';
+import { Add, Remove } from '@mui/icons-material';
 import { DepartmentInterface } from '../Interfaces/DepartmentInterface';
 
 const departments: DepartmentInterface[] = [
@@ -80,9 +80,6 @@ const Component2: React.FC = () => {
                                 />
                             </ListItemIcon>
                             <ListItemText primary={department.department} />
-                            <IconButton onClick={() => handleToggle(department.department)}>
-                                {open[department.department] ? <ExpandLess /> : <ExpandMore />}
-                            </IconButton>
                         </ListItem>
                         <Collapse in={open[department.department]} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
