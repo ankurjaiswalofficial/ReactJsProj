@@ -9,7 +9,7 @@ import {
     IconButton,
     Card
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Add, ExpandLess, ExpandMore, Remove } from '@mui/icons-material';
 import { DepartmentInterface } from '../Interfaces/DepartmentInterface';
 
 const departments: DepartmentInterface[] = [
@@ -69,12 +69,13 @@ const Component2: React.FC = () => {
                 {departments.map(department => (
                     <div key={department.department}>
                         <ListItem>
+                            <IconButton onClick={() => handleToggle(department.department)}>
+                                {open[department.department] ? <Remove /> : <Add />}
+                            </IconButton>
                             <ListItemIcon>
                                 <Checkbox
                                     edge="start"
                                     checked={selected[department.department] || false}
-                                    tabIndex={-1}
-                                    disableRipple
                                     onClick={() => handleSelect(department.department)}
                                 />
                             </ListItemIcon>
@@ -86,13 +87,11 @@ const Component2: React.FC = () => {
                         <Collapse in={open[department.department]} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 {department.sub_departments.map(subDept => (
-                                    <ListItem key={subDept} sx={{ pl: 4 }}>
+                                    <ListItem key={subDept} sx={{ pl: 12 }}>
                                         <ListItemIcon>
                                             <Checkbox
                                                 edge="start"
                                                 checked={selected[`${department.department}-${subDept}`] || false}
-                                                tabIndex={-1}
-                                                disableRipple
                                                 onClick={() => handleSelect(department.department, subDept)}
                                             />
                                         </ListItemIcon>
